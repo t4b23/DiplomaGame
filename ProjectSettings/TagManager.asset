@@ -11,7 +11,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - bg
   - 
   - 
   - 
@@ -40,4 +40,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: WallTiles
+    uniqueID: 407868719
+    locked: 0
+  - name: player
+    uniqueID: 1488279455
     locked: 0
