@@ -8,6 +8,7 @@ public class InventoryManager : MonoBehaviour
 {
     public GameObject inventoryItemPrefab;
     public InventorySlot[] inventorySlots;
+    public RecipeObject[] recipes;
     public void AddItem(Item item)
     {
         for (int i = 0; i < inventorySlots.Length; i++)
@@ -34,26 +35,81 @@ public class InventoryManager : MonoBehaviour
     {
         InventorySlot slot = inventorySlots[0];
         InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-        InventorySlot nextndslot = inventorySlots[1];
-        InventoryItem nextitemInSlot = slot.GetComponentInChildren<InventoryItem>();
-        
-        for (int i = 0; i < itemInSlot.item.craftingComponentOf.Length; i++)
+        InventorySlot nextslot = inventorySlots[1];
+        InventoryItem nextitemInSlot = nextslot.GetComponentInChildren<InventoryItem>();
+        int craftComponents = 0;
+        if (itemInSlot != null && nextitemInSlot != null)
         {
-            Item firstComponent = itemInSlot.item.craftingComponentOf[i];
-            for (int ind = 0; i < nextitemInSlot.item.craftingComponentOf.Length; i++)
-            {
-                if (firstComponent == nextitemInSlot.item.craftingComponentOf[ind])
+            for (int i = 0; i < recipes.Length; i++)
+            {                
+                for (int ind = 0; ind < recipes[i].components.Length; ind++)
                 {
-                    ClearInventory();
-                    SpawnNewItem(firstComponent, inventorySlots[0]);
-                    return;
+                    if (itemInSlot.item == recipes[i].components[ind] || nextitemInSlot.item == recipes[i].components[ind])
+                    {
+                        craftComponents++;
+                        if (craftComponents == recipes[i].components.Length)
+                        {
+                            ClearInventory();
+                            if (itemInSlot != null)
+                            {
+                                SpawnNewItem(recipes[i].resultObject, slot);
+                                return;
+                            }
+                            else if (nextitemInSlot != null)
+                            {
+                                SpawnNewItem(recipes[i].resultObject, nextslot);
+                                return;
+                            }
+                            else
+                                return;
+                        }
+                    }
                 }
             }
-           
+        }
+
+    }
+
+    public void UseCraftingStation(RecipeObject currentRecipe)
+    {
+        if (currentRecipe != null)
+        {        
+        InventorySlot slot = inventorySlots[0];
+        InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+        InventorySlot nextslot = inventorySlots[1];
+        InventoryItem nextitemInSlot = nextslot.GetComponentInChildren<InventoryItem>();
+        int craftComponents = 0;
+            if (itemInSlot != null || nextitemInSlot != null)
+            {
+                for (int ind = 0; ind < currentRecipe.components.Length; ind++)
+                {
+                    if (itemInSlot.item == currentRecipe.components[ind] || nextitemInSlot.item == currentRecipe.components[ind])
+                    {
+                        craftComponents++;
+                        if (craftComponents == currentRecipe.components.Length)
+                        {
+                            if (itemInSlot.item == currentRecipe.components[ind])
+                            {
+                                ClearSlot(slot);
+                                SpawnNewItem(currentRecipe.resultObject, slot);
+                                return;
+                            }
+                            else if (nextitemInSlot.item == currentRecipe.components[ind])
+                            {
+                                ClearSlot(nextslot);
+                                SpawnNewItem(currentRecipe.resultObject, nextslot);
+                                return;
+                            }
+                            else
+                                return;
+                        }
+                    }
+                }
+            }
         }
     }
 
-    void ClearInventory()
+    public void ClearInventory()
     {
         for (int iter = 0; iter < inventorySlots.Length; iter++)
         {
@@ -65,5 +121,15 @@ public class InventoryManager : MonoBehaviour
             }
             else return;
         }
+    }
+
+    public void ClearSlot(InventorySlot slot)
+    {
+        InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+        if (itemInSlot != null)
+        {
+            Destroy(slot.transform.GetChild(0).gameObject);
+        }
+        else return;
     }
 }
