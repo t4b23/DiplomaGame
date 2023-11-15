@@ -13,11 +13,7 @@ MonoBehaviour:
   m_Name: Milk
   m_EditorClassIdentifier: 
   tile: {fileID: 0}
-  type: 0
-  actionType: 0
   range: {x: 5, y: 4}
-  craftingComponentOf:
-  - {fileID: 11400000, guid: 9d4cefc84adb39e469128b336896bcdd, type: 2}
-  stackable: 0
   sellable: 0
+  usedInCrafting: 1
   image: {fileID: 21300000, guid: 1ccf846a420b5e648b60c61d4442a7da, type: 3}

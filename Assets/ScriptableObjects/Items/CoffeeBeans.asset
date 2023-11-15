@@ -13,9 +13,7 @@ MonoBehaviour:
   m_Name: CoffeeBeans
   m_EditorClassIdentifier: 
   tile: {fileID: 0}
-  type: 0
-  actionType: 0
   range: {x: 5, y: 4}
-  sctackable: 1
   sellable: 0
+  usedInCrafting: 1
   image: {fileID: 21300000, guid: 617974534cdd4fb408c4cb62a023c2e2, type: 3}

@@ -49,6 +49,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "SelectFirstItem",
+                    "type": "Button",
+                    "id": "0e5a2182-8dba-4e81-b9a5-bc83f2d1289d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SelectSecondItem",
+                    "type": "Button",
+                    "id": "6a76da6e-d941-4d4d-bf90-f4eb38aeec61",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -150,6 +168,28 @@
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "ebca5eb7-699a-4e91-870c-89636ef62030",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectFirstItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7a1d92d1-a01a-4559-954d-bad18c0fbaed",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectSecondItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

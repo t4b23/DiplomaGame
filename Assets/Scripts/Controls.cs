@@ -71,6 +71,24 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SelectFirstItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""0e5a2182-8dba-4e81-b9a5-bc83f2d1289d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectSecondItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""6a76da6e-d941-4d4d-bf90-f4eb38aeec61"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -172,6 +190,28 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ebca5eb7-699a-4e91-870c-89636ef62030"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectFirstItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7a1d92d1-a01a-4559-954d-bad18c0fbaed"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectSecondItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -191,6 +231,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_PC_Discard = m_PC.FindAction("Discard", throwIfNotFound: true);
         m_PC_ScrollItems = m_PC.FindAction("ScrollItems", throwIfNotFound: true);
         m_PC_Sprint = m_PC.FindAction("Sprint", throwIfNotFound: true);
+        m_PC_SelectFirstItem = m_PC.FindAction("SelectFirstItem", throwIfNotFound: true);
+        m_PC_SelectSecondItem = m_PC.FindAction("SelectSecondItem", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -257,6 +299,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PC_Discard;
     private readonly InputAction m_PC_ScrollItems;
     private readonly InputAction m_PC_Sprint;
+    private readonly InputAction m_PC_SelectFirstItem;
+    private readonly InputAction m_PC_SelectSecondItem;
     public struct PCActions
     {
         private @Controls m_Wrapper;
@@ -266,6 +310,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @Discard => m_Wrapper.m_PC_Discard;
         public InputAction @ScrollItems => m_Wrapper.m_PC_ScrollItems;
         public InputAction @Sprint => m_Wrapper.m_PC_Sprint;
+        public InputAction @SelectFirstItem => m_Wrapper.m_PC_SelectFirstItem;
+        public InputAction @SelectSecondItem => m_Wrapper.m_PC_SelectSecondItem;
         public InputActionMap Get() { return m_Wrapper.m_PC; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -290,6 +336,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Sprint.started += instance.OnSprint;
             @Sprint.performed += instance.OnSprint;
             @Sprint.canceled += instance.OnSprint;
+            @SelectFirstItem.started += instance.OnSelectFirstItem;
+            @SelectFirstItem.performed += instance.OnSelectFirstItem;
+            @SelectFirstItem.canceled += instance.OnSelectFirstItem;
+            @SelectSecondItem.started += instance.OnSelectSecondItem;
+            @SelectSecondItem.performed += instance.OnSelectSecondItem;
+            @SelectSecondItem.canceled += instance.OnSelectSecondItem;
         }
 
         private void UnregisterCallbacks(IPCActions instance)
@@ -309,6 +361,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Sprint.started -= instance.OnSprint;
             @Sprint.performed -= instance.OnSprint;
             @Sprint.canceled -= instance.OnSprint;
+            @SelectFirstItem.started -= instance.OnSelectFirstItem;
+            @SelectFirstItem.performed -= instance.OnSelectFirstItem;
+            @SelectFirstItem.canceled -= instance.OnSelectFirstItem;
+            @SelectSecondItem.started -= instance.OnSelectSecondItem;
+            @SelectSecondItem.performed -= instance.OnSelectSecondItem;
+            @SelectSecondItem.canceled -= instance.OnSelectSecondItem;
         }
 
         public void RemoveCallbacks(IPCActions instance)
@@ -342,5 +400,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnDiscard(InputAction.CallbackContext context);
         void OnScrollItems(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
+        void OnSelectFirstItem(InputAction.CallbackContext context);
+        void OnSelectSecondItem(InputAction.CallbackContext context);
     }
 }

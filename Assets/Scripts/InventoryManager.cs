@@ -2,25 +2,74 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEditor.Progress;
 
 public class InventoryManager : MonoBehaviour
 {
     public GameObject inventoryItemPrefab;
     public InventorySlot[] inventorySlots;
     public RecipeObject[] recipes;
+    int selectedSlot = -1;
+    public Controls controler;
+
+    private void Start()
+    {
+        ChangeSelectedSlot(0);
+    }
+
+    private void Awake()
+    {
+        controler = new Controls();
+    }
+
+    private void OnEnable()
+    {
+        controler.Enable();
+    }
+
+    private void OnDisable()
+    {
+        controler.Disable();
+    }
+
+    private void Update()
+    {
+        if (controler.PC.SelectFirstItem.WasPressedThisFrame())
+        {
+            ChangeSelectedSlot(0);
+        }
+        if (controler.PC.SelectSecondItem.WasPressedThisFrame())
+        {
+            ChangeSelectedSlot(1);
+        }
+        if (controler.PC.ScrollItems.WasPressedThisFrame())
+        {
+            if (selectedSlot == 0)
+            {
+                ChangeSelectedSlot(1);
+            }else
+                ChangeSelectedSlot(0);
+        }
+    }
+
+    void ChangeSelectedSlot(int newValue)
+    {
+        if(selectedSlot >= 0)
+        {
+            inventorySlots[selectedSlot].Deselect();
+        }        
+
+        inventorySlots[newValue].Select();
+        selectedSlot = newValue;
+    }
     public void AddItem(Item item)
     {
-        for (int i = 0; i < inventorySlots.Length; i++)
-        {
-            InventorySlot slot = inventorySlots[i]; 
+            InventorySlot slot = inventorySlots[selectedSlot]; 
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
             if (itemInSlot == null)
             {
                 SpawnNewItem(item,slot);
                 return;
-            }
-        }
+            }    
     }
 
     void SpawnNewItem (Item item, InventorySlot slot)
@@ -74,16 +123,15 @@ public class InventoryManager : MonoBehaviour
     {
         if (currentRecipe != null)
         {        
-        InventorySlot slot = inventorySlots[0];
+        InventorySlot slot = inventorySlots[selectedSlot];
         InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-        InventorySlot nextslot = inventorySlots[1];
-        InventoryItem nextitemInSlot = nextslot.GetComponentInChildren<InventoryItem>();
         int craftComponents = 0;
-            if (itemInSlot != null || nextitemInSlot != null)
+            if (itemInSlot != null)
             {
                 for (int ind = 0; ind < currentRecipe.components.Length; ind++)
                 {
-                    if (itemInSlot.item == currentRecipe.components[ind] || nextitemInSlot.item == currentRecipe.components[ind])
+                    if (itemInSlot.item == currentRecipe.components[ind])
+                        
                     {
                         craftComponents++;
                         if (craftComponents == currentRecipe.components.Length)
@@ -94,19 +142,13 @@ public class InventoryManager : MonoBehaviour
                                 SpawnNewItem(currentRecipe.resultObject, slot);
                                 return;
                             }
-                            else if (nextitemInSlot.item == currentRecipe.components[ind])
-                            {
-                                ClearSlot(nextslot);
-                                SpawnNewItem(currentRecipe.resultObject, nextslot);
-                                return;
-                            }
                             else
                                 return;
                         }
                     }
                 }
             }
-        }
+        }    
     }
 
     public void ClearInventory()
