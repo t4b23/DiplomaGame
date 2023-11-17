@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d76a83a5b2614543af03feb562c462e, type: 3}
-  m_Name: 1 Order
+  m_Name: OrderObject
   m_EditorClassIdentifier: 
-  orderedItems:
-  - {fileID: 11400000, guid: 9d4cefc84adb39e469128b336896bcdd, type: 2}
-  - {fileID: 11400000, guid: 06ee5f6029292b543a57f9b8ba41e32e, type: 2}
+  orderedItems: []
+  numberOfItems: 0
+  price: 0

@@ -2,18 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class InventoryManager : MonoBehaviour
 {
     public GameObject inventoryItemPrefab;
+    public GameObject sellingPoint;
     public InventorySlot[] inventorySlots;
     public RecipeObject[] recipes;
     int selectedSlot = -1;
     public Controls controler;
-
+    public TextMeshProUGUI moneyCounter;
+    public int itemNumber = 0;
+    public OrderManager orderManager;
+    public int numberOfItemsInOrder;
     private void Start()
     {
-        ChangeSelectedSlot(0);
+        ChangeSelectedSlot(0);        
     }
 
     private void Awake()
@@ -77,6 +82,34 @@ public class InventoryManager : MonoBehaviour
         GameObject newItemGo = Instantiate(inventoryItemPrefab, slot.transform);
         InventoryItem inventoryItem = newItemGo.GetComponent<InventoryItem>();
         inventoryItem.InitialiseItem(item);
+    }
+
+    public void SellItem(OrderObject order)
+    {
+        //numberOfItemsInOrder = order.orderedItems.Length;
+        int money = System.Convert.ToInt32(moneyCounter.text);
+        money += order.price;
+        if (inventorySlots[selectedSlot].GetComponentInChildren<InventoryItem>() != null && order != null)
+        {
+            for(int i = 0; i < numberOfItemsInOrder; i++)
+            {
+                if (inventorySlots[selectedSlot].GetComponentInChildren<InventoryItem>().item == order.orderedItems[i])
+                {
+                    //order.placedItemsOnDesk[itemNumber] = inventorySlots[selectedSlot].GetComponentInChildren<InventoryItem>().item;
+                    itemNumber++;
+                    ClearSlot(inventorySlots[selectedSlot]);                   
+                }
+            }
+            if (itemNumber == numberOfItemsInOrder)
+            {
+                moneyCounter.text = money.ToString();
+                itemNumber = 0;
+                sellingPoint.GetComponent<SellingPointScript>().currentOrder = null;
+                orderManager.GenerateNewOrder();
+                return;
+            }
+        }
+        return;
     }
 
 

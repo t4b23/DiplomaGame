@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 public class InventorySlot : MonoBehaviour
 {
     public Image image;
-    public Color selectedColor, notSelectedColor;
+    public Sprite selectedColor, notSelectedColor;
 
     private void Awake()
     {
@@ -17,11 +17,11 @@ public class InventorySlot : MonoBehaviour
 
     public void Select()
     {
-        image.color = selectedColor;
+        image.sprite = selectedColor;
     }
 
     public void Deselect()
     {
-        image.color = notSelectedColor;
+        image.sprite = notSelectedColor;
     }
 }

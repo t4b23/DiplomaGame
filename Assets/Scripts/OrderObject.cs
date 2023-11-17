@@ -7,4 +7,6 @@ using UnityEngine.Tilemaps;
 public class OrderObject : ScriptableObject
 {
     public Item[] orderedItems;
+    //public Item[] placedItemsOnDesk;
+    public int price;
 }
