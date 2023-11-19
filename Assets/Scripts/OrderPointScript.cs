@@ -7,9 +7,9 @@ public class OrderPointScript : MonoBehaviour
     public InventoryManager inventoryManager;
     public PlayerControl playerControl;
     private bool interacting;
-    public OrderObject order;
+    public GameObject currentOrder;
     public GameObject sellingPoint;
-    //public OrderManager orderManager;
+    public OrderManager orderManager;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -25,12 +25,12 @@ public class OrderPointScript : MonoBehaviour
 
     void Update()
     {
-        if (playerControl != null && order != null)
+        if (playerControl != null && currentOrder != null)
             if (playerControl.controler.PC.Interact.WasPressedThisFrame() && interacting && playerControl != null)
             {
-                //orderManager.GenerateNewOrder();
-                inventoryManager.numberOfItemsInOrder = order.orderedItems.Length;
-                sellingPoint.GetComponent<SellingPointScript>().currentOrder = order;
+                inventoryManager.numberOfItemsInOrder = currentOrder.GetComponent<OrderObjectPrefabScript>().orderedItems.Length;
+                inventoryManager.SetCurrentOrder(currentOrder.GetComponent<OrderObjectPrefabScript>().orderedItems);
+                sellingPoint.GetComponent<SellingPointScript>().currentOrder = currentOrder;
             }
 
     }

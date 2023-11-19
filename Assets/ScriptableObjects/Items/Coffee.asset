@@ -17,3 +17,4 @@ MonoBehaviour:
   sellable: 1
   usedInCrafting: 1
   image: {fileID: 21300000, guid: 4ae236a9b306dd64abb9c449852810a6, type: 3}
+  Price: 15

@@ -7,38 +7,34 @@ using static UnityEditor.Progress;
 
 public class OrderManager : MonoBehaviour
 {
-    public GameObject OrderPointPoint;
-    public OrderObject orderObject;
-    public OrderObject[] orders;
+    public GameObject OrderPoint, orderObjectPrefab, orderObjectsRow;
     public Item[] itemsToOrder;
     public int numberOfOrders;
     private void Start()
     {
-        orderObject.orderedItems = null;
-        orderObject.price = 0;
         GenerateNewOrder();
     }
     public void GenerateNewOrder()
-    {       
-        
-        int price = Random.Range(10, 50);
+    {
+        GameObject OrderObj = Instantiate(orderObjectPrefab, orderObjectsRow.transform);
+        int price = 0;
         int numberOfItems = Random.Range(2,3);        
         Item[] items = new Item[numberOfItems];
         int currentItemInd = Random.Range(0, itemsToOrder.Length);
         for (int ind = 0; ind < numberOfItems; ind++)
             {
             items[ind] = itemsToOrder[Random.Range(0, itemsToOrder.Length)];
+            price += items[ind].Price;
             }
-        orderObject.orderedItems = items;
-        orderObject.price = price;
+        OrderObj.GetComponent<OrderObjectPrefabScript>().orderedItems = items;
+        OrderObj.GetComponent<OrderObjectPrefabScript>().price = price;
         //int ordersLastItem = orders.Length;
-        orders[0] = orderObject;
-        SetNewOrder(orderObject);
+        SetNewOrder(OrderObj);
 
     }
 
-    public void SetNewOrder(OrderObject newOrder) 
+    public void SetNewOrder(GameObject obj) 
     {
-        OrderPointPoint.GetComponent<OrderPointScript>().order = newOrder;
+        OrderPoint.GetComponent<OrderPointScript>().currentOrder = obj;
     }   
 }

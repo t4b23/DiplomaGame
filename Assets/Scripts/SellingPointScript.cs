@@ -7,7 +7,7 @@ public class SellingPointScript : MonoBehaviour
     public InventoryManager inventoryManager;
     public PlayerControl playerControl;
     private bool interacting;
-    public OrderObject currentOrder;
+    public GameObject currentOrder;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -26,7 +26,7 @@ public class SellingPointScript : MonoBehaviour
         if (playerControl != null && currentOrder != null)
             if (playerControl.controler.PC.Interact.WasPressedThisFrame() && interacting && playerControl != null)
             {
-                inventoryManager.SellItem(currentOrder);   
+                inventoryManager.SellItem(currentOrder);
             }
 
     }

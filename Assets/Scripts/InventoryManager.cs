@@ -11,14 +11,24 @@ public class InventoryManager : MonoBehaviour
     public InventorySlot[] inventorySlots;
     public RecipeObject[] recipes;
     int selectedSlot = -1;
+    int notSelectedSlot;
     public Controls controler;
     public TextMeshProUGUI moneyCounter;
     public int itemNumber = 0;
     public OrderManager orderManager;
     public int numberOfItemsInOrder;
+    public GameObject orderPlace;
+    public TextMeshProUGUI[] itemsList;
+    int activeItemsInOrder;
+    public TextMeshProUGUI buttonText;
+    bool listActive;
+
     private void Start()
     {
-        ChangeSelectedSlot(0);        
+        ChangeSelectedSlot(0);
+        notSelectedSlot = 1;
+        turnOrderListOff();
+        clearList();
     }
 
     private void Awake()
@@ -41,18 +51,28 @@ public class InventoryManager : MonoBehaviour
         if (controler.PC.SelectFirstItem.WasPressedThisFrame())
         {
             ChangeSelectedSlot(0);
+            notSelectedSlot = 1;
         }
         if (controler.PC.SelectSecondItem.WasPressedThisFrame())
         {
             ChangeSelectedSlot(1);
+            notSelectedSlot = 0;
         }
         if (controler.PC.ScrollItems.WasPressedThisFrame())
         {
             if (selectedSlot == 0)
             {
                 ChangeSelectedSlot(1);
+                notSelectedSlot = 0;
             }else
+            {
                 ChangeSelectedSlot(0);
+                notSelectedSlot = 1;
+            }                
+        }
+        if(controler.PC.Discard.WasPerformedThisFrame())
+        {
+
         }
     }
 
@@ -70,11 +90,17 @@ public class InventoryManager : MonoBehaviour
     {
             InventorySlot slot = inventorySlots[selectedSlot]; 
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-            if (itemInSlot == null)
+            InventorySlot freeSlot = inventorySlots[notSelectedSlot];
+        InventoryItem itemInSecondSlot = freeSlot.GetComponentInChildren<InventoryItem>();
+        if (itemInSlot == null)
             {
                 SpawnNewItem(item,slot);
                 return;
-            }    
+            }else if(itemInSecondSlot == null)
+        {
+            SpawnNewItem(item, freeSlot);
+            return;
+        }
     }
 
     void SpawnNewItem (Item item, InventorySlot slot)
@@ -84,34 +110,36 @@ public class InventoryManager : MonoBehaviour
         inventoryItem.InitialiseItem(item);
     }
 
-    public void SellItem(OrderObject order)
+    public void SellItem(GameObject order)
     {
-        //numberOfItemsInOrder = order.orderedItems.Length;
         int money = System.Convert.ToInt32(moneyCounter.text);
-        money += order.price;
+        money += order.GetComponent<OrderObjectPrefabScript>().price;
         if (inventorySlots[selectedSlot].GetComponentInChildren<InventoryItem>() != null && order != null)
         {
             for(int i = 0; i < numberOfItemsInOrder; i++)
             {
-                if (inventorySlots[selectedSlot].GetComponentInChildren<InventoryItem>().item == order.orderedItems[i])
+                if (inventorySlots[selectedSlot].GetComponentInChildren<InventoryItem>().item == order.GetComponent<OrderObjectPrefabScript>().orderedItems[i])
                 {
-                    //order.placedItemsOnDesk[itemNumber] = inventorySlots[selectedSlot].GetComponentInChildren<InventoryItem>().item;
+                    order.GetComponent<OrderObjectPrefabScript>().orderedItems[i] = null;
+                    itemsList[i].text = null;
                     itemNumber++;
-                    ClearSlot(inventorySlots[selectedSlot]);                   
+                    ClearSlot(inventorySlots[selectedSlot]);
+                    break;
                 }
             }
-            if (itemNumber == numberOfItemsInOrder)
-            {
-                moneyCounter.text = money.ToString();
-                itemNumber = 0;
-                sellingPoint.GetComponent<SellingPointScript>().currentOrder = null;
-                orderManager.GenerateNewOrder();
-                return;
-            }
-        }
-        return;
-    }
 
+        }
+        if (itemNumber == numberOfItemsInOrder)
+        {
+            moneyCounter.text = money.ToString();
+            itemNumber = 0;
+            sellingPoint.GetComponent<SellingPointScript>().currentOrder = null;
+            Destroy(order);
+            orderManager.GenerateNewOrder();
+            clearList();
+            return;
+        }
+    }
 
     public void CraftItem()
     {
@@ -206,5 +234,46 @@ public class InventoryManager : MonoBehaviour
             Destroy(slot.transform.GetChild(0).gameObject);
         }
         else return;
+    }
+
+    public void SwitchOrderList()
+    {
+        if (listActive)
+        {
+            turnOrderListOff();
+        }
+        else
+            turnOrderListOn();
+    }
+
+    public void turnOrderListOn()
+    {
+        orderPlace.SetActive(true);     
+        listActive = true;
+        buttonText.text = "Hide list";
+    }
+
+    public void turnOrderListOff()
+    {
+        orderPlace.SetActive(false);
+        listActive = false;
+        buttonText.text = "Show list";
+    }
+    public void SetCurrentOrder(Item[] items)
+    {
+        for (int i = 0;  i < items.Length; i++)
+        {
+            itemsList[i].text = items[i].name;
+            itemsList[i].gameObject.SetActive(true);
+            activeItemsInOrder++;
+        }
+    }
+
+    void clearList()
+    {
+        for (int i = 0; i < itemsList.Length; i++)
+        {
+            itemsList[i].text = null;
+        }
     }
 }
