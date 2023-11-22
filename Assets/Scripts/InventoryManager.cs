@@ -3,24 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using UnityEngine.UIElements;
+using Unity.VisualScripting;
 
 public class InventoryManager : MonoBehaviour
 {
-    public GameObject inventoryItemPrefab;
-    public GameObject sellingPoint;
+    [Header("General")]
+    public Controls controler;
+
+    [Header("Inventory Slots")]
     public InventorySlot[] inventorySlots;
-    public RecipeObject[] recipes;
     int selectedSlot = -1;
     int notSelectedSlot;
-    public Controls controler;
+    public GameObject[] itemsToPickupOrder;
+    
+
+    [Header("Prefabs and GameObjects")]
+    public GameObject playerTransform;
+    public GameObject inventoryItemPrefab;
+    public GameObject itemToDropPrefab;
+    public GameObject sellingPoint;
+    public GameObject orderPlace;
+
+    [Header("Craft")]
+    public RecipeObject[] recipes;
+    
+    
+
+    [Header("Order system")]
+    public int numberOfItemsInOrder;
+    public OrderManager orderManager;
+
+    [Header("UI")]
     public TextMeshProUGUI moneyCounter;
     public int itemNumber = 0;
-    public OrderManager orderManager;
-    public int numberOfItemsInOrder;
-    public GameObject orderPlace;
-    public TextMeshProUGUI[] itemsList;
-    int activeItemsInOrder;
     public TextMeshProUGUI buttonText;
+    public TextMeshProUGUI[] itemsList;
+    //int activeItemsInOrder;
     bool listActive;
 
     private void Start()
@@ -64,46 +83,46 @@ public class InventoryManager : MonoBehaviour
             {
                 ChangeSelectedSlot(1);
                 notSelectedSlot = 0;
-            }else
+            } else
             {
                 ChangeSelectedSlot(0);
                 notSelectedSlot = 1;
-            }                
+            }
         }
-        if(controler.PC.Discard.WasPerformedThisFrame())
+        if (controler.PC.Discard.WasPerformedThisFrame() && inventorySlots[selectedSlot].transform.childCount > 0)
         {
-
+            DropItem(inventorySlots[selectedSlot].GetComponentInChildren<InventoryItem>().item);
         }
     }
 
     void ChangeSelectedSlot(int newValue)
     {
-        if(selectedSlot >= 0)
+        if (selectedSlot >= 0)
         {
             inventorySlots[selectedSlot].Deselect();
-        }        
+        }
 
         inventorySlots[newValue].Select();
         selectedSlot = newValue;
     }
     public void AddItem(Item item)
     {
-            InventorySlot slot = inventorySlots[selectedSlot]; 
-            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-            InventorySlot freeSlot = inventorySlots[notSelectedSlot];
+        InventorySlot slot = inventorySlots[selectedSlot];
+        InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+        InventorySlot freeSlot = inventorySlots[notSelectedSlot];
         InventoryItem itemInSecondSlot = freeSlot.GetComponentInChildren<InventoryItem>();
         if (itemInSlot == null)
-            {
-                SpawnNewItem(item,slot);
-                return;
-            }else if(itemInSecondSlot == null)
+        {
+            SpawnNewItem(item, slot);
+            return;
+        } else if (itemInSecondSlot == null)
         {
             SpawnNewItem(item, freeSlot);
             return;
         }
     }
 
-    void SpawnNewItem (Item item, InventorySlot slot)
+    void SpawnNewItem(Item item, InventorySlot slot)
     {
         GameObject newItemGo = Instantiate(inventoryItemPrefab, slot.transform);
         InventoryItem inventoryItem = newItemGo.GetComponent<InventoryItem>();
@@ -116,7 +135,7 @@ public class InventoryManager : MonoBehaviour
         money += order.GetComponent<OrderObjectPrefabScript>().price;
         if (inventorySlots[selectedSlot].GetComponentInChildren<InventoryItem>() != null && order != null)
         {
-            for(int i = 0; i < numberOfItemsInOrder; i++)
+            for (int i = 0; i < numberOfItemsInOrder; i++)
             {
                 if (inventorySlots[selectedSlot].GetComponentInChildren<InventoryItem>().item == order.GetComponent<OrderObjectPrefabScript>().orderedItems[i])
                 {
@@ -151,7 +170,7 @@ public class InventoryManager : MonoBehaviour
         if (itemInSlot != null && nextitemInSlot != null)
         {
             for (int i = 0; i < recipes.Length; i++)
-            {                
+            {
                 for (int ind = 0; ind < recipes[i].components.Length; ind++)
                 {
                     if (itemInSlot.item == recipes[i].components[ind] || nextitemInSlot.item == recipes[i].components[ind])
@@ -183,16 +202,16 @@ public class InventoryManager : MonoBehaviour
     public void UseCraftingStation(RecipeObject currentRecipe)
     {
         if (currentRecipe != null)
-        {        
-        InventorySlot slot = inventorySlots[selectedSlot];
-        InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-        int craftComponents = 0;
+        {
+            InventorySlot slot = inventorySlots[selectedSlot];
+            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+            int craftComponents = 0;
             if (itemInSlot != null)
             {
                 for (int ind = 0; ind < currentRecipe.components.Length; ind++)
                 {
                     if (itemInSlot.item == currentRecipe.components[ind])
-                        
+
                     {
                         craftComponents++;
                         if (craftComponents == currentRecipe.components.Length)
@@ -209,7 +228,7 @@ public class InventoryManager : MonoBehaviour
                     }
                 }
             }
-        }    
+        }
     }
 
     public void ClearInventory()
@@ -220,7 +239,7 @@ public class InventoryManager : MonoBehaviour
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
             if (itemInSlot != null)
             {
-                Destroy(slot.transform.GetChild(0).gameObject);                 
+                Destroy(slot.transform.GetChild(0).gameObject);
             }
             else return;
         }
@@ -248,7 +267,7 @@ public class InventoryManager : MonoBehaviour
 
     public void turnOrderListOn()
     {
-        orderPlace.SetActive(true);     
+        orderPlace.SetActive(true);
         listActive = true;
         buttonText.text = "Hide list";
     }
@@ -261,14 +280,13 @@ public class InventoryManager : MonoBehaviour
     }
     public void SetCurrentOrder(Item[] items)
     {
-        for (int i = 0;  i < items.Length; i++)
+        for (int i = 0; i < items.Length; i++)
         {
             itemsList[i].text = items[i].name;
             itemsList[i].gameObject.SetActive(true);
-            activeItemsInOrder++;
+            //activeItemsInOrder++;
         }
     }
-
     void clearList()
     {
         for (int i = 0; i < itemsList.Length; i++)
@@ -276,4 +294,29 @@ public class InventoryManager : MonoBehaviour
             itemsList[i].text = null;
         }
     }
+
+    public void DropItem(Item itemToDrop)
+    {
+        if (inventorySlots[selectedSlot].GetComponentInChildren<InventoryItem>().item != null)
+        {
+            Sprite itemImage = itemToDrop.image;
+            GameObject dropppedObj = Instantiate(itemToDropPrefab, transform);
+            dropppedObj.transform.position = playerTransform.transform.position;
+            dropppedObj.GetComponent<DroppedItemScript>().droppedItem = itemToDrop;
+            dropppedObj.GetComponent<SpriteRenderer>().sprite = itemImage;
+            dropppedObj.GetComponent<DroppedItemScript>().inventoryManager = this;
+            ClearSlot(inventorySlots[selectedSlot]);
+        }
+
+    }
+
+    public void PickupItem(Item itemToPickup)
+    {
+        if (inventorySlots[selectedSlot].GetComponentInChildren<InventoryItem>().item != null)
+        {
+            AddItem(itemToPickup);
+            //droppedObjectToDelete.GetComponent<DroppedItemScript>().DestroyThis();
+        }
+    }
+    
 }

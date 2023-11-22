@@ -258,7 +258,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33cca7d5a6334cc419005de12147d363, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerTransform: {fileID: 1852711498}
   inventoryItemPrefab: {fileID: 2186146028007912474, guid: 7cbeb978ed2b7a743acf9caa212b2b32, type: 3}
+  itemToDropPrefab: {fileID: 7044609041520872865, guid: 419fad9b469f98e47962c46b62fd263b, type: 3}
   sellingPoint: {fileID: 1510962885}
   inventorySlots:
   - {fileID: 1478467846}

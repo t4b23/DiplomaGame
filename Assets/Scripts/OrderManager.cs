@@ -9,7 +9,6 @@ public class OrderManager : MonoBehaviour
 {
     public GameObject OrderPoint, orderObjectPrefab, orderObjectsRow;
     public Item[] itemsToOrder;
-    public int numberOfOrders;
     private void Start()
     {
         GenerateNewOrder();
@@ -18,7 +17,7 @@ public class OrderManager : MonoBehaviour
     {
         GameObject OrderObj = Instantiate(orderObjectPrefab, orderObjectsRow.transform);
         int price = 0;
-        int numberOfItems = Random.Range(2,3);        
+        int numberOfItems = Random.Range(1,4);        
         Item[] items = new Item[numberOfItems];
         int currentItemInd = Random.Range(0, itemsToOrder.Length);
         for (int ind = 0; ind < numberOfItems; ind++)
