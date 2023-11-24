@@ -15,7 +15,7 @@ public class InventoryManager : MonoBehaviour
     public InventorySlot[] inventorySlots;
     int selectedSlot = -1;
     int notSelectedSlot;
-    public GameObject[] itemsToPickupOrder;
+    public GameObject NextItemToPickup;
     
 
     [Header("Prefabs and GameObjects")]
@@ -310,12 +310,18 @@ public class InventoryManager : MonoBehaviour
 
     }
 
-    public void PickupItem(Item itemToPickup)
+    public void PickupItem()
     {
-        if (inventorySlots[selectedSlot].GetComponentInChildren<InventoryItem>().item != null)
+        if (inventorySlots[selectedSlot].GetComponentInChildren<InventoryItem>() == null && NextItemToPickup != null)
         {
-            AddItem(itemToPickup);
-            //droppedObjectToDelete.GetComponent<DroppedItemScript>().DestroyThis();
+            AddItem(NextItemToPickup.GetComponent<DroppedItemScript>().droppedItem);
+            Destroy(NextItemToPickup);
+            NextItemToPickup = null;
+        }else if (inventorySlots[notSelectedSlot].GetComponentInChildren<InventoryItem>() == null && NextItemToPickup != null)
+        {
+            AddItem(NextItemToPickup.GetComponent<DroppedItemScript>().droppedItem);
+            Destroy(NextItemToPickup);
+            NextItemToPickup = null;
         }
     }
     

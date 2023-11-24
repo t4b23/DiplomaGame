@@ -14,7 +14,7 @@ public class DroppedItemScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        playerControl = collision.GetComponent<PlayerControl>();        
+        playerControl = collision.GetComponent<PlayerControl>();
         interacting = true;
     }
 
@@ -29,13 +29,8 @@ public class DroppedItemScript : MonoBehaviour
         if (playerControl != null)
             if (playerControl.controler.PC.Interact.WasPressedThisFrame() && interacting && playerControl != null)
             {
-                inventoryManager.PickupItem(droppedItem);
+                inventoryManager.PickupItem();
             }
 
-    }
-
-    public void DestroyThis()
-    {
-        Destroy(gameObject);
     }
 }

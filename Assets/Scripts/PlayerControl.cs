@@ -8,6 +8,8 @@ using UnityEngine.Tilemaps;
 
 public class PlayerControl : MonoBehaviour
 {
+    public InventoryManager inventoryManager;
+
     public float moveSpeed = 5f;
 
     public Rigidbody2D rb;
@@ -29,6 +31,30 @@ public class PlayerControl : MonoBehaviour
     private void OnDisable()
     {
         controler.Disable();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (inventoryManager.NextItemToPickup == null && collision.gameObject.tag == "Dropped Item")
+        {
+            inventoryManager.NextItemToPickup = collision.gameObject;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (inventoryManager.NextItemToPickup == collision.gameObject)
+        {
+            inventoryManager.NextItemToPickup = null;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (inventoryManager.NextItemToPickup == null && collision.gameObject.tag == "Dropped Item")
+        {
+            inventoryManager.NextItemToPickup = collision.gameObject;
+        }
     }
 
     void Update()

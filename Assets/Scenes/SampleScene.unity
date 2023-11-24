@@ -258,25 +258,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33cca7d5a6334cc419005de12147d363, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventorySlots:
+  - {fileID: 1478467846}
+  - {fileID: 1320017233}
+  NextItemToPickup: {fileID: 0}
   playerTransform: {fileID: 1852711498}
   inventoryItemPrefab: {fileID: 2186146028007912474, guid: 7cbeb978ed2b7a743acf9caa212b2b32, type: 3}
   itemToDropPrefab: {fileID: 7044609041520872865, guid: 419fad9b469f98e47962c46b62fd263b, type: 3}
   sellingPoint: {fileID: 1510962885}
-  inventorySlots:
-  - {fileID: 1478467846}
-  - {fileID: 1320017233}
+  orderPlace: {fileID: 2118596695}
   recipes:
   - {fileID: 11400000, guid: a1c012b5ac87e7b4dbe733e8ac6a3732, type: 2}
+  numberOfItemsInOrder: 0
+  orderManager: {fileID: 165478083}
   moneyCounter: {fileID: 1179455367}
   itemNumber: 0
-  orderManager: {fileID: 165478083}
-  numberOfItemsInOrder: 0
-  orderPlace: {fileID: 2118596695}
+  buttonText: {fileID: 1471748033}
   itemsList:
   - {fileID: 1990605511}
   - {fileID: 609777925}
   - {fileID: 542491746}
-  buttonText: {fileID: 1471748033}
 --- !u!4 &33705031
 Transform:
   m_ObjectHideFlags: 0
@@ -342,7 +343,6 @@ MonoBehaviour:
   itemsToOrder:
   - {fileID: 11400000, guid: 9d4cefc84adb39e469128b336896bcdd, type: 2}
   - {fileID: 11400000, guid: 06ee5f6029292b543a57f9b8ba41e32e, type: 2}
-  numberOfOrders: 5
 --- !u!1 &191556656 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7384482809092696602, guid: 51b1bcc72d267ab4ba99903ea32c32b3, type: 3}
@@ -7914,6 +7914,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60ec807877dc6c84eb91c14b62c3ad6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventoryManager: {fileID: 33705030}
   moveSpeed: 5
   rb: {fileID: 1852711501}
   movement: {x: 0, y: 0}
