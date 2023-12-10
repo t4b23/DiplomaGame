@@ -40,7 +40,7 @@ public class InventoryManager : MonoBehaviour
     public TextMeshProUGUI buttonText;
     public TextMeshProUGUI[] itemsList;
     //int activeItemsInOrder;
-    bool listActive;
+    bool listActive;   
 
     private void Start()
     {
@@ -52,7 +52,7 @@ public class InventoryManager : MonoBehaviour
 
     private void Awake()
     {
-        controler = new Controls();
+        controler = new Controls();        
     }
 
     private void OnEnable()
