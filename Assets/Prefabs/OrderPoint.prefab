@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3225815053277395159}
   m_Layer: 0
   m_Name: OrderPoint
-  m_TagString: Untagged
+  m_TagString: OrderPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -45,6 +45,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4920dd363367dcf49a72690d2dc10ae0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventoryManager: {fileID: 0}
+  playerControl: {fileID: 0}
+  currentOrder: {fileID: 0}
+  sellingPoint: {fileID: 0}
+  orderManager: {fileID: 0}
 --- !u!61 &3225815053277395159
 BoxCollider2D:
   m_ObjectHideFlags: 0

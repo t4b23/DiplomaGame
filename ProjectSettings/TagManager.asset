@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Dropped Item
+  - OrderPoint
+  - queuePlace
+  - Client
   layers:
   - Default
   - TransparentFX
