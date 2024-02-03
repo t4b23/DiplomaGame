@@ -37,7 +37,7 @@ public class SellingPointScript : MonoBehaviour
             if (playerControl.controler.PC.Interact.WasPressedThisFrame() && interacting && playerControl != null)
             {
                 inventoryManager.SellItem(currentOrder);
-                currentClient.GetComponent<ClientLogic>().ExitBuilding();
+                //currentClient.GetComponent<ClientLogic>().ExitBuilding();
                 currentClient.GetComponent<ClientLogic>().gotOrder = true;
             }
 

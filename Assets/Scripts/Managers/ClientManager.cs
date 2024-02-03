@@ -4,8 +4,36 @@ using UnityEngine;
 
 public class ClientManager : MonoBehaviour
 {
-    GameObject[] Clients;
-    GameObject[] QueuePlaces;
+    public GameObject clientPrefab;
+    public Transform clientSpawnPoint;
+    public OrderManager orderManager;
 
-    public int numberOfClients;
+    public GameObject[] Clients;
+    public GameObject[] QueuePlaces;
+    public GameObject orderPoint;
+    public GameObject exitPoint;
+
+    public int maxNumberOfClients;
+
+    public void GenerateNewClient()
+    {
+        if (Clients.Length < maxNumberOfClients)
+        {
+            GameObject ClientObject = Instantiate(clientPrefab, clientSpawnPoint);
+            ClientObject.GetComponent<ClientLogic>().clientOrder = orderManager.GetComponent<OrderManager>().GenerateNewOrder();
+        }
+        
+    }
+
+    public void ClientExit(GameObject client)
+    {
+
+    }
+
+    public void DeleteClient(GameObject client)
+    {
+
+    }
+
+
 }

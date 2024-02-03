@@ -8,10 +8,11 @@ public class OrderPointScript : MonoBehaviour
     public InventoryManager inventoryManager;
     public PlayerControl playerControl;
     private bool interacting;
-    public GameObject currentOrder;
-    public GameObject sellingPoint;
+    public GameObject currentOrder;    
     public OrderManager orderManager;
+    public bool gaveOrder;
     public GameObject currentClient;
+    public ClientManager clientManager;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {        
@@ -46,13 +47,24 @@ public class OrderPointScript : MonoBehaviour
     void Update()
     {
         if (playerControl != null && currentOrder != null)
-            if (playerControl.controler.PC.Interact.WasPressedThisFrame() && interacting && playerControl != null)
+            if (playerControl.controler.PC.Interact.WasPressedThisFrame() && interacting && playerControl != null && !gaveOrder)
             {
                 inventoryManager.numberOfItemsInOrder = currentOrder.GetComponent<OrderObjectPrefabScript>().orderedItems.Length;
                 inventoryManager.SetCurrentOrder(currentOrder.GetComponent<OrderObjectPrefabScript>().orderedItems);
-                sellingPoint.GetComponent<SellingPointScript>().currentOrder = currentOrder;
-                currentClient.GetComponent<ClientLogic>().ChangePathToNew(sellingPoint.transform);
+                gaveOrder = true;
+                //sellingPoint.GetComponent<SellingPointScript>().currentOrder = currentOrder;
+                Debug.Log("Gave Order");
             }
+            else if (playerControl.controler.PC.Interact.WasPressedThisFrame() && interacting && playerControl != null && gaveOrder)
+        {
+            inventoryManager.SellItem(currentOrder);
+        }        
+    }
 
+    public void OrderCompleted()
+    {
+        clientManager.ClientExit(currentClient);
+        gaveOrder = false;
+        Debug.Log("sold");
     }
 }

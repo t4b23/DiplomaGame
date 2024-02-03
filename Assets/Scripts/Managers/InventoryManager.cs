@@ -152,9 +152,10 @@ public class InventoryManager : MonoBehaviour
         {
             moneyCounter.text = money.ToString();
             itemNumber = 0;
-            sellingPoint.GetComponent<SellingPointScript>().currentOrder = null;
+            sellingPoint.GetComponent<OrderPointScript>().OrderCompleted();
+            sellingPoint.GetComponent<OrderPointScript>().currentOrder = null;
             Destroy(order);
-            orderManager.GenerateNewOrder();
+            //orderManager.GenerateNewOrder();
             clearList();
             return;
         }

@@ -8,16 +8,17 @@ using static UnityEditor.Progress;
 public class OrderManager : MonoBehaviour
 {
     public GameObject OrderPoint, orderObjectPrefab, orderObjectsRow;
+    public int maxItemsInOrder;
     public Item[] itemsToOrder;
     private void Start()
     {
-        GenerateNewOrder();
+        //GenerateNewOrder();
     }
-    public void GenerateNewOrder()
+    public GameObject GenerateNewOrder()
     {
         GameObject OrderObj = Instantiate(orderObjectPrefab, orderObjectsRow.transform);
         int price = 0;
-        int numberOfItems = Random.Range(1,4);        
+        int numberOfItems = Random.Range(1,maxItemsInOrder+1);        
         Item[] items = new Item[numberOfItems];
         int currentItemInd = Random.Range(0, itemsToOrder.Length);
         for (int ind = 0; ind < numberOfItems; ind++)
@@ -28,7 +29,8 @@ public class OrderManager : MonoBehaviour
         OrderObj.GetComponent<OrderObjectPrefabScript>().orderedItems = items;
         OrderObj.GetComponent<OrderObjectPrefabScript>().price = price;
         //int ordersLastItem = orders.Length;
-        SetNewOrder(OrderObj);
+        //SetNewOrder(OrderObj)
+        return OrderObj;
 
     }
 

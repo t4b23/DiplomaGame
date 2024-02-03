@@ -9,8 +9,7 @@ public class ClientLogic : MonoBehaviour
     public bool isReadyToMakeOrder;
     public bool gotOrder;
     public GameObject placeInQueue;
-    public GameObject orderPoint;
-    public GameObject exitPoint;
+
     public bool isMoving;
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -41,10 +40,10 @@ public class ClientLogic : MonoBehaviour
 
     private void Start()
     {
-        ChoosePath();
+        //ChoosePath();
     }
 
-    public void ChoosePath()
+/*    public void ChoosePath()
     {
         if(!gotOrder)
         { MoveToOrderPoint(); 
@@ -52,7 +51,7 @@ public class ClientLogic : MonoBehaviour
         {
             ExitBuilding();
         }
-    }
+    }*/
 
     public void ChangePathToNew(Transform newPath)
     {
@@ -67,16 +66,17 @@ public class ClientLogic : MonoBehaviour
         }
     }
 
-    public void MoveToOrderPoint()
+    public void MoveToOrderPoint(Transform newPath)
     {
         //проверка свободного места в очереди и передвижение к нему вплоть до точки заказа
         isMoving = true;
-        gameObject.GetComponent<AIDestinationSetter>().target = orderPoint.transform;
+        gameObject.GetComponent<AIDestinationSetter>().target = newPath;
     }
 
-    public void ExitBuilding()
+    public void ExitBuilding(Transform newPath)
     {
         //заказ получен, выходим из сдания
-        gameObject.GetComponent<AIDestinationSetter>().target = exitPoint.transform;
+        isMoving = true;
+        gameObject.GetComponent<AIDestinationSetter>().target = newPath;
     }
 }
