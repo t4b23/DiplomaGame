@@ -8,7 +8,7 @@ public class ClientLogic : MonoBehaviour
     public GameObject clientOrder;
     public bool isReadyToMakeOrder;
     public bool gotOrder;
-    public GameObject placeInQueue;
+    public Transform placeInQueue;
 
     public bool isMoving;
 
@@ -21,7 +21,7 @@ public class ClientLogic : MonoBehaviour
         }
         else if (collision.gameObject.tag == "queuePlace" && placeInQueue == null)
         {
-            placeInQueue = collision.gameObject;
+            placeInQueue = collision.transform;
             isMoving = true;
         }
     }
@@ -55,22 +55,14 @@ public class ClientLogic : MonoBehaviour
 
     public void ChangePathToNew(Transform newPath)
     {
+        //проверка свободного места в очереди и передвижение к нему вплоть до точки заказа
+        isMoving = true;
+        placeInQueue = newPath;
         gameObject.GetComponent<AIDestinationSetter>().target = newPath;        
     }
 
     private void Update()
     {
-        if(!isMoving && !isReadyToMakeOrder && !gotOrder)
-        {
-            //MoveToOrderPoint();
-        }
-    }
-
-    public void MoveToOrderPoint(Transform newPath)
-    {
-        //проверка свободного места в очереди и передвижение к нему вплоть до точки заказа
-        isMoving = true;
-        gameObject.GetComponent<AIDestinationSetter>().target = newPath;
     }
 
     public void ExitBuilding(Transform newPath)

@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 7798039205043859633}
   - component: {fileID: 8376237190631126593}
   - component: {fileID: 5797487467501621861}
-  m_Layer: 0
+  - component: {fileID: 9100390391211945393}
+  m_Layer: 8
   m_Name: ClientPrefab
   m_TagString: Client
   m_Icon: {fileID: 0}
@@ -53,8 +54,6 @@ MonoBehaviour:
   isReadyToMakeOrder: 0
   gotOrder: 0
   placeInQueue: {fileID: 0}
-  orderPoint: {fileID: 0}
-  exitPoint: {fileID: 0}
   isMoving: 0
 --- !u!58 &789513452066952037
 CircleCollider2D:
@@ -71,7 +70,7 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -85,12 +84,12 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.28
+  m_Radius: 0.25
 --- !u!114 &7798039205043859633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,7 +155,7 @@ MonoBehaviour:
   rotationSpeed: 360
   slowdownDistance: 0.6
   pickNextWaypointDist: 2
-  endReachedDistance: 0.2
+  endReachedDistance: 0.42
   alwaysDrawGizmos: 0
   slowWhenNotFacingTarget: 1
   whenCloseToDestination: 0
@@ -175,6 +174,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   version: 1
   target: {fileID: 0}
+--- !u!50 &9100390391211945393
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2890800702956545616}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &8078415278090701368
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,7 +211,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7257182412002694129}
   - component: {fileID: 861093846779514246}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ClientSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

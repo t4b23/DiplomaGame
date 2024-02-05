@@ -19,7 +19,8 @@ public class OrderPointScript : MonoBehaviour
         if (collision.gameObject.tag == "Client" && currentClient == null)
         {
             Debug.Log("ClientInHitbox");
-            currentClient = collision.gameObject;
+            currentClient = collision.gameObject;            
+            currentOrder = currentClient.GetComponent<ClientLogic>().clientOrder;
         }
 
         if (collision.gameObject.tag == "Player")
@@ -48,7 +49,7 @@ public class OrderPointScript : MonoBehaviour
     {
         if (playerControl != null && currentOrder != null)
             if (playerControl.controler.PC.Interact.WasPressedThisFrame() && interacting && playerControl != null && !gaveOrder)
-            {
+            {                
                 inventoryManager.numberOfItemsInOrder = currentOrder.GetComponent<OrderObjectPrefabScript>().orderedItems.Length;
                 inventoryManager.SetCurrentOrder(currentOrder.GetComponent<OrderObjectPrefabScript>().orderedItems);
                 gaveOrder = true;
@@ -57,13 +58,16 @@ public class OrderPointScript : MonoBehaviour
             }
             else if (playerControl.controler.PC.Interact.WasPressedThisFrame() && interacting && playerControl != null && gaveOrder)
         {
-            inventoryManager.SellItem(currentOrder);
+                inventoryManager.SellItem(currentOrder);
         }        
     }
 
     public void OrderCompleted()
     {
+        //currentOrder = null;
+        currentClient.GetComponent<ClientLogic>().gotOrder = true;
         clientManager.ClientExit(currentClient);
+        //clientManager.ManageQueue();
         gaveOrder = false;
         Debug.Log("sold");
     }
