@@ -9,8 +9,9 @@ public class ClientExitTrigger : MonoBehaviour
     {
         if (collision.gameObject.tag == "Client")
         {
-            Debug.Log("Destroying Client");
-            clientManager.DestroyClient(collision.gameObject);
+            Debug.Log("Destroying Client");            
+            clientManager.DestroyClient(collision.gameObject);     
+            clientManager.GenerateNewClient();
             clientManager.ManageQueue();
         }
     }

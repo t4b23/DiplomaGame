@@ -22,6 +22,7 @@ public class ClientManager : MonoBehaviour
         GenerateNewClient();
         GenerateNewClient();
         GenerateNewClient();
+        RegroupMassive();
         ManageQueue();
     }
 
@@ -42,7 +43,7 @@ public class ClientManager : MonoBehaviour
                 return;
                 }
             }
-        
+        RegroupMassive();
     }
 
     public void ClientExit(GameObject client)
@@ -66,32 +67,39 @@ public class ClientManager : MonoBehaviour
         }
     }
 
-    private void RegroupMassive()
+    public void RegroupMassive()
     {
         Debug.Log("Regrpoup massive");
         for (int i = 0;i < maxNumberOfClients;i++)
         {
-            if (Clients[i] == null && Clients[i+1] != null && Clients.Length < maxNumberOfClients) 
+            if (Clients[i] == null && i != maxNumberOfClients - 1)
             {
-                Clients[i] = Clients[i+1];
-                Clients[i + 1] = null;
-            }
+                Debug.Log("Number of client: " + i);
+                Clients[i] = Clients[i + 1];
+                Clients[i + 1] = null;                
+            }            
         }
     }
 
     public void ManageQueue()
     {
         Debug.Log("Managing Queue");
+        CleanQueues();
        for (int i = 0; i < QueuePlaces.Length; i++)
         {
-            if (QueuePlaces[i].GetComponent<QueueTrigger>().currentClient == null)
+            if (Clients[i] != null && QueuePlaces[i].GetComponent<QueueTrigger>().currentClient == null)
             {
-                for (int j = 0; j < Clients.Length; j++)
-                {
-                        QueuePlaces[i].GetComponent<QueueTrigger>().currentClient = Clients[j];
-                        Clients[j].GetComponent<ClientLogic>().ChangePathToNew(QueuePlaces[i].transform);                    
-                }
+                QueuePlaces[i].GetComponent<QueueTrigger>().currentClient = Clients[i];
+                Clients[i].GetComponent<ClientLogic>().ChangePathToNew(QueuePlaces[i].transform);
             }
+        }
+    }
+
+    private void CleanQueues()
+    {
+        for (int i = 0; i < QueuePlaces.Length; i++)
+        {
+            QueuePlaces[i].GetComponent<QueueTrigger>().currentClient = null;
         }
     }
 }

@@ -241,8 +241,7 @@ public class InventoryManager : MonoBehaviour
             if (itemInSlot != null)
             {
                 Destroy(slot.transform.GetChild(0).gameObject);
-            }
-            else return;
+            }            
         }
     }
 
