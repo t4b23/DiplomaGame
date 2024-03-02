@@ -67,7 +67,7 @@ public class OrderPointScript : MonoBehaviour
         //currentOrder = null;
         currentClient.GetComponent<ClientLogic>().gotOrder = true;
         clientManager.ClientExit(currentClient);
-        //clientManager.ManageQueue();
+        clientManager.ManageQueue();
         gaveOrder = false;
         Debug.Log("sold");
     }

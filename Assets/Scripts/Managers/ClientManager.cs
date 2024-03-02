@@ -24,6 +24,7 @@ public class ClientManager : MonoBehaviour
         GenerateNewClient();
         RegroupMassive();
         ManageQueue();
+
     }
 
     public void GenerateNewClient()
@@ -50,6 +51,16 @@ public class ClientManager : MonoBehaviour
     {
         client.GetComponent<ClientLogic>().placeInQueue = null;
         client.GetComponent<ClientLogic>().ChangePathToNew(exitPoint);
+        Clients[0] = null;
+        RegroupMassive() ;
+       //StartCoroutine(RegroupAfterSeconds(1));
+
+    }
+
+    IEnumerator RegroupAfterSeconds(int seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        RegroupMassive();
     }
 
     public void DestroyClient(GameObject client)
@@ -87,7 +98,7 @@ public class ClientManager : MonoBehaviour
         CleanQueues();
        for (int i = 0; i < QueuePlaces.Length; i++)
         {
-            if (Clients[i] != null && QueuePlaces[i].GetComponent<QueueTrigger>().currentClient == null)
+            if (Clients[i] != null && QueuePlaces[i].GetComponent<QueueTrigger>().currentClient == null && !Clients[i].GetComponent<ClientLogic>().gotOrder)
             {
                 QueuePlaces[i].GetComponent<QueueTrigger>().currentClient = Clients[i];
                 Clients[i].GetComponent<ClientLogic>().ChangePathToNew(QueuePlaces[i].transform);
