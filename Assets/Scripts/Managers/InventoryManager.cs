@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
-using UnityEngine.UIElements;
 using Unity.VisualScripting;
+using System.Runtime.InteropServices.WindowsRuntime;
+using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -28,7 +30,7 @@ public class InventoryManager : MonoBehaviour
     [Header("Craft")]
     public RecipeObject[] recipes;
     
-    
+
 
     [Header("Order system")]
     public int numberOfItemsInOrder;
@@ -36,6 +38,7 @@ public class InventoryManager : MonoBehaviour
 
     [Header("UI")]
     public TextMeshProUGUI moneyCounter;
+    public int currentMoney;
     public int itemNumber = 0;
     public TextMeshProUGUI buttonText;
     public TextMeshProUGUI[] itemsList;
@@ -122,6 +125,23 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    public bool HaveFreeSlot()
+    {        
+        InventorySlot slot = inventorySlots[selectedSlot];
+        InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+        InventorySlot freeSlot = inventorySlots[notSelectedSlot];
+        InventoryItem itemInSecondSlot = freeSlot.GetComponentInChildren<InventoryItem>();
+        if (itemInSlot == null)
+        {
+            return true;
+        }
+        else if (itemInSecondSlot == null)
+        {
+            return true;
+        }
+        else return false;
+    }
+
     void SpawnNewItem(Item item, InventorySlot slot)
     {
         GameObject newItemGo = Instantiate(inventoryItemPrefab, slot.transform);
@@ -150,6 +170,7 @@ public class InventoryManager : MonoBehaviour
         }
         if (itemNumber == numberOfItemsInOrder)
         {
+            currentMoney = money;
             moneyCounter.text = money.ToString();
             itemNumber = 0;
             sellingPoint.GetComponent<OrderPointScript>().OrderCompleted();
@@ -159,6 +180,12 @@ public class InventoryManager : MonoBehaviour
             clearList();
             return;
         }
+    }
+
+    public void ChangeMoney(int money)
+    {
+        currentMoney = money;
+        moneyCounter.text = money.ToString();
     }
 
     public void CraftItem()
@@ -200,10 +227,11 @@ public class InventoryManager : MonoBehaviour
 
     }
 
-    public void UseCraftingStation(RecipeObject currentRecipe)
+    public Item UseCraftingStation(RecipeObject currentRecipe)
     {
+        Item itemz = null;
         if (currentRecipe != null)
-        {
+        {            
             InventorySlot slot = inventorySlots[selectedSlot];
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
             int craftComponents = 0;
@@ -220,16 +248,21 @@ public class InventoryManager : MonoBehaviour
                             if (itemInSlot.item == currentRecipe.components[ind])
                             {
                                 ClearSlot(slot);
-                                SpawnNewItem(currentRecipe.resultObject, slot);
-                                return;
+                                //SpawnNewItem(currentRecipe.resultObject, slot);
+                                itemz = currentRecipe.resultObject;
                             }
                             else
-                                return;
+                                itemz = null;
                         }
                     }
                 }
             }
-        }
+        }return itemz;
+    } 
+
+    public void ClearCurrentSlot()
+    {
+        ClearSlot(inventorySlots[selectedSlot]);
     }
 
     public void ClearInventory()

@@ -11,6 +11,7 @@ public class ClientManager : MonoBehaviour
     public Transform orderPoint;
     public Transform exitPoint;    
     public GameObject[] Clients;
+    public GameObject[] NextClientsToDestroy;
     public int maxNumberOfClients;
     public GameObject[] QueuePlaces;
     
@@ -22,7 +23,7 @@ public class ClientManager : MonoBehaviour
         GenerateNewClient();
         GenerateNewClient();
         GenerateNewClient();
-        RegroupMassive();
+        Clients = RegroupMassive(Clients, maxNumberOfClients);
         ManageQueue();
 
     }
@@ -44,52 +45,68 @@ public class ClientManager : MonoBehaviour
                 return;
                 }
             }
-        RegroupMassive();
+        Clients = RegroupMassive(Clients, maxNumberOfClients);
     }
 
     public void ClientExit(GameObject client)
     {
         client.GetComponent<ClientLogic>().placeInQueue = null;
         client.GetComponent<ClientLogic>().ChangePathToNew(exitPoint);
+        addClientToDestroy(client);
         Clients[0] = null;
-        RegroupMassive() ;
+        Clients = RegroupMassive(Clients, maxNumberOfClients) ;
        //StartCoroutine(RegroupAfterSeconds(1));
 
+    }
+
+    void addClientToDestroy(GameObject client)
+    {
+        for (int i = 0;i <= NextClientsToDestroy.Length -1;i++)
+        {
+            if (NextClientsToDestroy[i] == null)
+            {
+                NextClientsToDestroy[i] = client;
+                break;
+            }
+            
+        }
     }
 
     IEnumerator RegroupAfterSeconds(int seconds)
     {
         yield return new WaitForSeconds(seconds);
-        RegroupMassive();
+        Clients = RegroupMassive(Clients, maxNumberOfClients);
     }
 
     public void DestroyClient(GameObject client)
     {
         Debug.Log("Destroy client 2");
-        for (int i = 0; i < Clients.Length; i++)
+        for (int i = 0; i < NextClientsToDestroy.Length; i++)
         {
-            if (Clients[i] == client)
+            if (NextClientsToDestroy[i] == client)
             {
-                Clients[i] = null;
+                Debug.Log("Delete Client");
+                NextClientsToDestroy[i] = null;
                 Destroy(client);
-                RegroupMassive();
+                NextClientsToDestroy = RegroupMassive(NextClientsToDestroy, NextClientsToDestroy.Length);
                 return;
             }
         }
     }
 
-    public void RegroupMassive()
+    public GameObject[] RegroupMassive(GameObject[] massive, int number)
     {
         Debug.Log("Regrpoup massive");
-        for (int i = 0;i < maxNumberOfClients;i++)
+        for (int i = 0;i < number;i++)
         {
-            if (Clients[i] == null && i != maxNumberOfClients - 1)
+            if (massive[i] == null && i != number - 1)
             {
                 Debug.Log("Number of client: " + i);
-                Clients[i] = Clients[i + 1];
-                Clients[i + 1] = null;                
+                massive[i] = massive[i + 1];
+                massive[i + 1] = null;                
             }            
         }
+        return massive;
     }
 
     public void ManageQueue()
