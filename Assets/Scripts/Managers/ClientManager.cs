@@ -9,24 +9,33 @@ public class ClientManager : MonoBehaviour
     public Transform clientSpawnPoint;
     public OrderManager orderManager;
     public Transform orderPoint;
-    public Transform exitPoint;    
+    public Transform exitPoint;
+    public int clientsToSpawn;
     public GameObject[] Clients;
     public GameObject[] NextClientsToDestroy;
     public int maxNumberOfClients;
     public GameObject[] QueuePlaces;
-    
 
-    
+
+
 
     private void Start()
-    {
-        GenerateNewClient();
-        GenerateNewClient();
-        GenerateNewClient();
+    {        
+        clientsToSpawn = QueuePlaces.Length;
+        StartCoroutine(GenerateClientAfterTime());
         Clients = RegroupMassive(Clients, maxNumberOfClients);
         ManageQueue();
 
     }
+
+    private void Update()
+    {
+/*        if (clientsToSpawn > 0)
+        {
+            StartCoroutine(GenerateClientAfterTime());            
+        }*/
+    }
+
 
     public void GenerateNewClient()
     {
@@ -48,6 +57,19 @@ public class ClientManager : MonoBehaviour
         Clients = RegroupMassive(Clients, maxNumberOfClients);
     }
 
+    IEnumerator GenerateClientAfterTime()
+    {
+        for (int i = clientsToSpawn; i > 0; i--)
+        {
+            int time = Random.Range(2, 15);
+            Debug.Log("Generating clients after: " + time + " seconds");
+            yield return new WaitForSeconds(time);
+            GenerateNewClient();
+            ManageQueue();
+            //clientsToSpawn--;
+        }
+    }
+
     public void ClientExit(GameObject client)
     {
         client.GetComponent<ClientLogic>().placeInQueue = null;
@@ -65,18 +87,13 @@ public class ClientManager : MonoBehaviour
         {
             if (NextClientsToDestroy[i] == null)
             {
-                NextClientsToDestroy[i] = client;
+                NextClientsToDestroy[i] = client;                
                 break;
             }
             
         }
     }
 
-    IEnumerator RegroupAfterSeconds(int seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-        Clients = RegroupMassive(Clients, maxNumberOfClients);
-    }
 
     public void DestroyClient(GameObject client)
     {
@@ -89,6 +106,8 @@ public class ClientManager : MonoBehaviour
                 NextClientsToDestroy[i] = null;
                 Destroy(client);
                 NextClientsToDestroy = RegroupMassive(NextClientsToDestroy, NextClientsToDestroy.Length);
+                clientsToSpawn++;
+                StartCoroutine(GenerateClientAfterTime());
                 return;
             }
         }

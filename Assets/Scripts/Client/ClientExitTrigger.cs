@@ -11,8 +11,6 @@ public class ClientExitTrigger : MonoBehaviour
         {
             Debug.Log("Destroying Client");            
             clientManager.DestroyClient(collision.gameObject);     
-            clientManager.GenerateNewClient();
-            clientManager.ManageQueue();
         }
     }
 }
