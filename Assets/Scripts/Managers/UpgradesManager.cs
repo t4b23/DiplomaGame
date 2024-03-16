@@ -14,6 +14,8 @@ public class UpgradesManager : MonoBehaviour
     public int coffeeTier;
     public TextMeshProUGUI coffeeButtonText;
     public TextMeshProUGUI coffeeInfoText;
+    public Button coffeeButton;
+    private bool maxCoffeeupgrade = false;
 
     private void Start()
     {
@@ -36,17 +38,27 @@ public class UpgradesManager : MonoBehaviour
     public void UpgradeCoffeeMachine() 
     {
         Debug.Log("TryingToUpgrade");
-        if(inventoryManager.currentMoney >= coffeeTierPrice[coffeeTier] && coffeeTier != coffeeTierPrice.Length && isMenuOpen)
+        if(inventoryManager.currentMoney >= coffeeTierPrice[coffeeTier] && isMenuOpen && !maxCoffeeupgrade)
         {
-            inventoryManager.ChangeMoney(inventoryManager.currentMoney - coffeeTierPrice[coffeeTier]);
-            coffeeTier++;
-            coffeMachine.duration = coffeMachine.duration - 1;
-            coffeeInfoText.text = "- " + coffeeTier.ToString() + " seconds";
-            coffeeButtonText.text = coffeeTierPrice[coffeeTier].ToString() + "$";
-            if (coffeeTier == coffeeTierPrice.Length)
+
+            if (coffeeTier < coffeeTierPrice.Length)
             {
-                coffeeButtonText.text = "MAX";
+                inventoryManager.ChangeMoney(inventoryManager.currentMoney - coffeeTierPrice[coffeeTier]);
+                coffeeTier++;
+                if (coffeeTier == coffeeTierPrice.Length)
+                {
+                    coffeeInfoText.text = "- " + coffeeTier.ToString() + " seconds";
+                    maxCoffeeupgrade = true;
+                    coffeeButtonText.text = "MAX";
+                    coffeeButton.interactable = false;
+                    return;
+                }
+                coffeMachine.duration = coffeMachine.duration - 1;
+                coffeeInfoText.text = "- " + coffeeTier.ToString() + " seconds";
+                coffeeButtonText.text = coffeeTierPrice[coffeeTier].ToString() + "$";
+
             }
         }
     }
+        
 }

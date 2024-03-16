@@ -66,7 +66,7 @@ public class ClientManager : MonoBehaviour
             yield return new WaitForSeconds(time);
             GenerateNewClient();
             ManageQueue();
-            //clientsToSpawn--;
+            clientsToSpawn--;
         }
     }
 
