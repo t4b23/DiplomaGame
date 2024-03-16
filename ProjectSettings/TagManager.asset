@@ -45,6 +45,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: background
+    uniqueID: 1580472593
+    locked: 0
+  - name: foreground
+    uniqueID: 3370728117
+    locked: 0
   - name: WallTiles
     uniqueID: 407868719
     locked: 0
