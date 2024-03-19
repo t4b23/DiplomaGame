@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class CraftStationScript : MonoBehaviour
 {
-    public int duration;
+    public int durationBonus;
     private int SmallEpsilon = 1;
 
 
     public InventoryManager inventoryManager;
 
-    public RecipeObject recipeToCraft;
+    public RecipeObject[] recipesToCraft;
 
     public PlayerControl playerControl;
 
-    public CoffeeProgressBar progressBar;
+    public ProgressBar progressBar;
     private bool readyToGive = false;
     private Item itemToGive;
     public Image readyIcon;
@@ -43,10 +44,13 @@ public class CraftStationScript : MonoBehaviour
         {
             if (playerControl.controler.PC.Interact.WasPressedThisFrame() && !inProgress && !readyToGive && itemToGive == null)
             {
-                itemToGive = inventoryManager.UseCraftingStation(recipeToCraft);
+                RecipeObject currentRecipe = inventoryManager.CheckRecipe(recipesToCraft);
                 //inventoryManager.ClearCurrentSlot();
-                if (itemToGive != null)
+                if (currentRecipe != null)
                 {
+                    itemToGive = currentRecipe.resultObject;
+                    int duration = currentRecipe.duration;
+                    duration = duration - durationBonus;
                     StartCoroutine(progressTime(duration));
                 }
 

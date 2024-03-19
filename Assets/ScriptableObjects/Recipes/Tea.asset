@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f1e53eeb0e3256d47bafd89ae12ddec5, type: 3}
-  m_Name: Coffee
+  m_Name: Tea
   m_EditorClassIdentifier: 
-  resultObject: {fileID: 11400000, guid: 06ee5f6029292b543a57f9b8ba41e32e, type: 2}
-  duration: 5
+  resultObject: {fileID: 11400000, guid: f60ccb17871ab284eb03e38078679c58, type: 2}
+  duration: 7
   components:
-  - {fileID: 11400000, guid: 98f622db838c01547b8e6db4fa053d01, type: 2}
+  - {fileID: 11400000, guid: bd7c2c5597f033b4d959359744106bef, type: 2}

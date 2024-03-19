@@ -9,10 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1e53eeb0e3256d47bafd89ae12ddec5, type: 3}
-  m_Name: Coffee
+  m_Script: {fileID: 11500000, guid: 169d55f2b0f7719498d047ad0f4fb119, type: 3}
+  m_Name: MilkCoffee
   m_EditorClassIdentifier: 
-  resultObject: {fileID: 11400000, guid: 06ee5f6029292b543a57f9b8ba41e32e, type: 2}
-  duration: 5
-  components:
-  - {fileID: 11400000, guid: 98f622db838c01547b8e6db4fa053d01, type: 2}
+  tile: {fileID: 0}
+  range: {x: 5, y: 4}
+  sellable: 1
+  usedInCrafting: 0
+  image: {fileID: 21300000, guid: 2994b1890451ef548911b681da61fa51, type: 3}
+  Price: 20

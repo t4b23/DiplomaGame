@@ -227,37 +227,41 @@ public class InventoryManager : MonoBehaviour
 
     }
 
-    public Item UseCraftingStation(RecipeObject currentRecipe)
+    public RecipeObject CheckRecipe(RecipeObject[] currentRecipes)
     {
-        Item itemz = null;
-        if (currentRecipe != null)
+        RecipeObject recipeToReturn = null;
+        if (currentRecipes != null)
         {            
             InventorySlot slot = inventorySlots[selectedSlot];
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
             int craftComponents = 0;
+            int j = 0;
             if (itemInSlot != null)
             {
-                for (int ind = 0; ind < currentRecipe.components.Length; ind++)
+                for (int ind = 0; ind < currentRecipes[j].components.Length; ind++)
                 {
-                    if (itemInSlot.item == currentRecipe.components[ind])
-
+                    if (itemInSlot.item == currentRecipes[j].components[ind])
                     {
                         craftComponents++;
-                        if (craftComponents == currentRecipe.components.Length)
+                        if (craftComponents == currentRecipes[j].components.Length)
                         {
-                            if (itemInSlot.item == currentRecipe.components[ind])
+                            if (itemInSlot.item == currentRecipes[j].components[ind])
                             {
                                 ClearSlot(slot);
                                 //SpawnNewItem(currentRecipe.resultObject, slot);
-                                itemz = currentRecipe.resultObject;
+                                recipeToReturn = currentRecipes[j];
                             }
                             else
-                                itemz = null;
+                                recipeToReturn = null;
                         }
+                    }
+                    if (j < currentRecipes.Length -1)
+                    {
+                        j++;
                     }
                 }
             }
-        }return itemz;
+        }return recipeToReturn;
     } 
 
     public void ClearCurrentSlot()

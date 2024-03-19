@@ -8,5 +8,6 @@ public class RecipeObject : ScriptableObject
 {
     [Header("Only Gameplay")]
     public Item resultObject;
+    public int duration;
     public Item[] components;
 }

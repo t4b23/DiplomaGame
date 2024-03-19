@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Latte
   m_EditorClassIdentifier: 
   resultObject: {fileID: 11400000, guid: 9d4cefc84adb39e469128b336896bcdd, type: 2}
+  duration: 0
   components:
   - {fileID: 11400000, guid: 06ee5f6029292b543a57f9b8ba41e32e, type: 2}
-  - {fileID: 11400000, guid: 57a6702080dbf9c4a85f73985a811287, type: 2}
+  - {fileID: 11400000, guid: 1a9a0e72114f4064aa5f4a6d528fcc7e, type: 2}
