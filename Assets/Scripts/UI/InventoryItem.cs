@@ -10,11 +10,13 @@ public class InventoryItem : MonoBehaviour
 
     [Header("UI")]
     public Image image;
+    public string itemName;
 
     public void InitialiseItem(Item newItem)
     {
         item = newItem;
         image.sprite = newItem.image;
+        itemName = newItem.itemName;
     }
 
 

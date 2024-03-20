@@ -16,4 +16,6 @@ MonoBehaviour:
   range: {x: 5, y: 4}
   sellable: 0
   usedInCrafting: 1
+  itemName: Coffe Beans
   image: {fileID: 21300000, guid: 617974534cdd4fb408c4cb62a023c2e2, type: 3}
+  Price: 0

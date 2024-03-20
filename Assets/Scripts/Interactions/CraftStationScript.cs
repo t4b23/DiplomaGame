@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 using UnityEngine;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using TMPro;
+using System;
 
 public class CraftStationScript : MonoBehaviour
 {
@@ -18,6 +20,7 @@ public class CraftStationScript : MonoBehaviour
     public PlayerControl playerControl;
 
     public ProgressBar progressBar;
+    public TextMeshProUGUI timer;
     private bool readyToGive = false;
     private Item itemToGive;
     public Image readyIcon;
@@ -69,16 +72,21 @@ public class CraftStationScript : MonoBehaviour
     {
         inProgress = true;
         progressBar.turnOn();
+        timer.gameObject.SetActive(true);
         float time = 0.0f;
+        int timeForTimer = 0;
         while (time < duration)
         {
             progressBar.changeSliderValue(time / Mathf.Max(duration, SmallEpsilon));
             time += Time.deltaTime;
+            timeForTimer = Convert.ToInt32(time);
+            timer.text = timeForTimer.ToString();
             yield return new WaitForEndOfFrame();
         }
         readyIcon.gameObject.SetActive(true);
         progressBar.changeSliderValue(0);
         progressBar.turnOff();
+        timer.gameObject.SetActive(false);
         readyToGive = true;
         inProgress = false;
 

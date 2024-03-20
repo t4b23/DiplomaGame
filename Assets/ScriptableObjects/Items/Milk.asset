@@ -16,4 +16,6 @@ MonoBehaviour:
   range: {x: 5, y: 4}
   sellable: 0
   usedInCrafting: 1
+  itemName: Milk
   image: {fileID: 21300000, guid: 1ccf846a420b5e648b60c61d4442a7da, type: 3}
+  Price: 0

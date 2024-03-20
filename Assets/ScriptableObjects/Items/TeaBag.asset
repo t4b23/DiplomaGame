@@ -16,5 +16,6 @@ MonoBehaviour:
   range: {x: 5, y: 4}
   sellable: 0
   usedInCrafting: 1
+  itemName: Tea Bag
   image: {fileID: 21300000, guid: 062c0375f46c0bc41be84f059e4c532d, type: 3}
   Price: 0

@@ -37,6 +37,7 @@ public class InventoryManager : MonoBehaviour
     public OrderManager orderManager;
 
     [Header("UI")]
+    public TextMeshProUGUI currentItemNameText;
     public TextMeshProUGUI moneyCounter;
     public int currentMoney;
     public int itemNumber = 0;
@@ -50,7 +51,7 @@ public class InventoryManager : MonoBehaviour
         ChangeSelectedSlot(0);
         notSelectedSlot = 1;
         turnOrderListOff();
-        clearList();
+        clearList();        
     }
 
     private void Awake()
@@ -98,6 +99,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+
     void ChangeSelectedSlot(int newValue)
     {
         if (selectedSlot >= 0)
@@ -107,6 +109,7 @@ public class InventoryManager : MonoBehaviour
 
         inventorySlots[newValue].Select();
         selectedSlot = newValue;
+        SetItemNameUI();
     }
     public void AddItem(Item item)
     {
@@ -117,6 +120,7 @@ public class InventoryManager : MonoBehaviour
         if (itemInSlot == null)
         {
             SpawnNewItem(item, slot);
+            SetItemNameUI();
             return;
         } else if (itemInSecondSlot == null)
         {
@@ -125,7 +129,23 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public bool HaveFreeSlot()
+
+    private void SetItemNameUI()
+    {
+        if (inventorySlots[selectedSlot].hasItem)
+        {
+            Debug.Log("Current Item name is: " + inventorySlots[selectedSlot].GetComponentInChildren<InventoryItem>().itemName);
+            currentItemNameText.gameObject.SetActive(true);
+            currentItemNameText.text = inventorySlots[selectedSlot].GetComponentInChildren<InventoryItem>().itemName;
+        }
+        else
+        {
+            Debug.Log("No Item in slot");
+            currentItemNameText.gameObject.SetActive(false);
+            currentItemNameText.text = null;
+        }
+    }
+public bool HaveFreeSlot()
     {        
         InventorySlot slot = inventorySlots[selectedSlot];
         InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
@@ -147,6 +167,7 @@ public class InventoryManager : MonoBehaviour
         GameObject newItemGo = Instantiate(inventoryItemPrefab, slot.transform);
         InventoryItem inventoryItem = newItemGo.GetComponent<InventoryItem>();
         inventoryItem.InitialiseItem(item);
+        slot.hasItem = true;
     }
 
     public void SellItem(GameObject order)
@@ -210,6 +231,7 @@ public class InventoryManager : MonoBehaviour
                             if (itemInSlot != null)
                             {
                                 SpawnNewItem(recipes[i].resultObject, slot);
+                                SetItemNameUI();
                                 return;
                             }
                             else if (nextitemInSlot != null)
@@ -278,8 +300,10 @@ public class InventoryManager : MonoBehaviour
             if (itemInSlot != null)
             {
                 Destroy(slot.transform.GetChild(0).gameObject);
+                slot.hasItem = false;
             }            
         }
+        SetItemNameUI();
     }
 
     public void ClearSlot(InventorySlot slot)
@@ -288,8 +312,10 @@ public class InventoryManager : MonoBehaviour
         if (itemInSlot != null)
         {
             Destroy(slot.transform.GetChild(0).gameObject);
+            slot.hasItem = false;
+            SetItemNameUI();
         }
-        else return;
+        else return;        
     }
 
     public void SwitchOrderList()

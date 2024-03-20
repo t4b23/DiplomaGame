@@ -16,5 +16,6 @@ MonoBehaviour:
   range: {x: 5, y: 4}
   sellable: 0
   usedInCrafting: 1
+  itemName: Foamy Milk
   image: {fileID: 21300000, guid: 6270724e2e373744b80c97c7eca29775, type: 3}
   Price: 0

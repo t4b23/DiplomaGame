@@ -16,5 +16,6 @@ MonoBehaviour:
   range: {x: 5, y: 4}
   sellable: 1
   usedInCrafting: 1
+  itemName: Tea
   image: {fileID: 21300000, guid: dc3a729d83ca27a45ac7ad6de4f946f6, type: 3}
   Price: 20

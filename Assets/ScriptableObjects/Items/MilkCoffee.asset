@@ -16,5 +16,6 @@ MonoBehaviour:
   range: {x: 5, y: 4}
   sellable: 1
   usedInCrafting: 0
+  itemName: Milk Coffee
   image: {fileID: 21300000, guid: 2994b1890451ef548911b681da61fa51, type: 3}
   Price: 20

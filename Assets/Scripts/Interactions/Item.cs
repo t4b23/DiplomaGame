@@ -13,6 +13,7 @@ public class Item : ScriptableObject
     [Header("Only UI")]
     public bool sellable;
     public bool usedInCrafting;
+    public string itemName;
 
     [Header("Both")]
     public Sprite image;

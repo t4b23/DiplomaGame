@@ -9,6 +9,7 @@ public class InventorySlot : MonoBehaviour
 {
     public Image image;
     public Sprite selectedColor, notSelectedColor;
+    public bool hasItem;
 
     private void Awake()
     {

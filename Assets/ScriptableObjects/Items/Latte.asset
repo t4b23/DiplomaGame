@@ -16,5 +16,6 @@ MonoBehaviour:
   range: {x: 5, y: 4}
   sellable: 1
   usedInCrafting: 0
+  itemName: Latte
   image: {fileID: 21300000, guid: 481adcfc7dcac774180ad60115dff2e2, type: 3}
   Price: 25
