@@ -15,7 +15,7 @@ public class ClientManager : MonoBehaviour
     public GameObject[] NextClientsToDestroy;
     public int maxNumberOfClients;
     public GameObject[] QueuePlaces;
-
+    public animClipsMass[] AnimClips;
 
 
 
@@ -43,6 +43,9 @@ public class ClientManager : MonoBehaviour
             GameObject ClientObject = Instantiate(clientPrefab, transform);
             ClientObject.transform.position = clientSpawnPoint.transform.position;
             ClientObject.GetComponent<ClientLogic>().clientOrder = orderManager.GetComponent<OrderManager>().GenerateNewOrder();
+            int AnimIndex = Random.Range(0, AnimClips.Length);
+            ClientObject.GetComponent<ClientLogic>().AnimIndex = AnimIndex;
+        ClientObject.GetComponent<ClientLogic>().idleClips = AnimClips[AnimIndex].clientAnimationClips;
             ClientObject.SetActive(true);
             for (int i = 0; i < maxNumberOfClients; i++)
             {
@@ -59,14 +62,18 @@ public class ClientManager : MonoBehaviour
 
     IEnumerator GenerateClientAfterTime()
     {
+
         for (int i = clientsToSpawn; i > 0; i--)
         {
-            int time = Random.Range(2, 15);
-            Debug.Log("Generating clients after: " + time + " seconds");
-            yield return new WaitForSeconds(time);
-            GenerateNewClient();
-            ManageQueue();
-            clientsToSpawn--;
+            if (clientsToSpawn > 0)
+            {
+                int time = Random.Range(2, 15);
+                Debug.Log("Generating clients after: " + time + " seconds");
+                yield return new WaitForSeconds(time);
+                GenerateNewClient();
+                ManageQueue();
+                clientsToSpawn--;
+            }
         }
     }
 

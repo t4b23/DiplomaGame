@@ -95,7 +95,7 @@ public class UpgradesManager : MonoBehaviour
                 }
                 milkMachine.durationBonus++;
                 milkInfoText.text = "- " + milkTier.ToString() + " seconds";
-                milkButtonText.text = coffeeTierPrice[milkTier].ToString() + "$";
+                milkButtonText.text = milkTierPrice[milkTier].ToString() + "$";
 
             }
         }

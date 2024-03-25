@@ -216,36 +216,45 @@ public bool HaveFreeSlot()
         InventorySlot nextslot = inventorySlots[1];
         InventoryItem nextitemInSlot = nextslot.GetComponentInChildren<InventoryItem>();
         int craftComponents = 0;
+        
+
         if (itemInSlot != null && nextitemInSlot != null)
         {
             for (int i = 0; i < recipes.Length; i++)
             {
-                for (int ind = 0; ind < recipes[i].components.Length; ind++)
+                RecipeObject checkRecipe = Instantiate(recipes[i],transform);
+                for (int ind = 0; ind < checkRecipe.components.Length; ind++)
                 {
-                    if (itemInSlot.item == recipes[i].components[ind] || nextitemInSlot.item == recipes[i].components[ind])
+                    if (itemInSlot.item == checkRecipe.components[ind] || nextitemInSlot.item == checkRecipe.components[ind])
                     {
-                        craftComponents++;
-                        if (craftComponents == recipes[i].components.Length)
-                        {
-                            ClearInventory();
-                            if (itemInSlot != null)
-                            {
-                                SpawnNewItem(recipes[i].resultObject, slot);
-                                SetItemNameUI();
-                                return;
-                            }
-                            else if (nextitemInSlot != null)
-                            {
-                                SpawnNewItem(recipes[i].resultObject, nextslot);
-                                return;
-                            }
-                            else
-                                return;
-                        }
+                        checkRecipe.components[ind] = null;                        
                     }
-                }
+                    if (checkRecipe.components[0] == null && checkRecipe.components[1] == null)
+                    {
+                        ClearInventory();
+                        if (itemInSlot != null)
+                        {
+                            SpawnNewItem(checkRecipe.resultObject, slot);
+                            //SetItemNameUI();
+                            //Destroy(checkRecipe);
+                            return;
+                        }
+                        else if (nextitemInSlot != null)
+                        {
+                            SpawnNewItem(checkRecipe.resultObject, nextslot);
+                            //SetItemNameUI();
+                            //Destroy(checkRecipe);
+                            return;
+                        }
+                        else
+                            return;
+                    }
+                }                
+                Destroy(checkRecipe);
             }
+            SetItemNameUI();
         }
+
 
     }
 

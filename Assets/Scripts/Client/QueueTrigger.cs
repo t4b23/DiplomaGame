@@ -10,7 +10,7 @@ public class QueueTrigger : MonoBehaviour
         if (collision.gameObject.tag == "Client" && currentClient == null)
         {
             currentClient = collision.gameObject;
-            collision.gameObject.GetComponent<ClientLogic>().isMoving = false;
+            
         }
     }
 
@@ -19,6 +19,7 @@ public class QueueTrigger : MonoBehaviour
         if (collision.gameObject.tag == "Client" && currentClient != null)
         {
             currentClient = null;
+            
         }
     }
 }

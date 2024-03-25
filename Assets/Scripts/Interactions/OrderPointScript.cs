@@ -21,6 +21,7 @@ public class OrderPointScript : MonoBehaviour
             Debug.Log("ClientInHitbox");
             currentClient = collision.gameObject;            
             currentOrder = currentClient.GetComponent<ClientLogic>().clientOrder;
+            
         }
 
         if (collision.gameObject.tag == "Player")
@@ -42,6 +43,7 @@ public class OrderPointScript : MonoBehaviour
         if (collision.gameObject.tag == "Client" && currentClient != null)
         {
             currentClient = null;
+            
         }
     }
 

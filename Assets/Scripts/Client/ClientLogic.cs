@@ -10,19 +10,28 @@ public class ClientLogic : MonoBehaviour
     public bool gotOrder;
     public Transform placeInQueue;
 
-    public bool isMoving;
+    public Vector2 movement = Vector2.zero;
+    public Animator animator;
+    public AnimationClip[] idleClips;
+
+    public int AnimIndex;
+    protected AnimatorOverrideController animatorOverrideController;
+
+    private void Start()
+    {
+        animatorOverrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
+        animator.runtimeAnimatorController = animatorOverrideController;        
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "OrderPoint")
         {
             isReadyToMakeOrder = true;
-            isMoving = false;
         }
         else if (collision.gameObject.tag == "queuePlace" && placeInQueue == null)
         {
             placeInQueue = collision.transform;
-            isMoving = true;
         }
     }
 
@@ -38,37 +47,71 @@ public class ClientLogic : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        //ChoosePath();
-    }
 
-/*    public void ChoosePath()
-    {
-        if(!gotOrder)
-        { MoveToOrderPoint(); 
-        }else
-        {
-            ExitBuilding();
-        }
-    }*/
+
 
     public void ChangePathToNew(Transform newPath)
     {
         //проверка свободного места в очереди и передвижение к нему вплоть до точки заказа
-        isMoving = true;
-        placeInQueue = newPath;
-        gameObject.GetComponent<AIDestinationSetter>().target = newPath;        
+        
+        if (placeInQueue != newPath) 
+        {
+            gameObject.GetComponent<AIDestinationSetter>().target = newPath;
+            placeInQueue = newPath;
+        }
+
+        
     }
 
     private void Update()
     {
+        movement = gameObject.GetComponent<AIPath>().velocity;
+       
+        animator.SetInteger("AnimSetIndex", AnimIndex);
+        // horizontal
+        if (movement.x < 0)
+        {
+            animator.SetFloat("X", -1);
+            animatorOverrideController["client_idle_down"] = idleClips[0];
+
+        }
+        else if (movement.x > 0)
+        {
+            animator.SetFloat("X", 1);
+            animatorOverrideController["client_idle_down"] = idleClips[1];
+        }
+        else if (movement.x == 0)
+        {
+            animator.SetFloat("X", 0);
+        }
+
+        // vertical
+        if (movement.y < 0)
+        {
+            animator.SetFloat("Y", -1);
+            animatorOverrideController["client_idle_down"] = idleClips[2];
+        }
+        if (movement.y > 0)
+        {
+            animator.SetFloat("Y", 1);
+            animatorOverrideController["client_idle_down"] = idleClips[3];
+        }
+        else if (movement.y == 0)
+        {
+            animator.SetFloat("Y", 0);
+        }
+
+        animator.SetFloat("Speed", movement.sqrMagnitude);
+
+
+
+
+
     }
 
     public void ExitBuilding(Transform newPath)
     {
         //заказ получен, выходим из сдания
-        isMoving = true;
         gameObject.GetComponent<AIDestinationSetter>().target = newPath;
     }
 }
